@@ -1,0 +1,103 @@
+// import { useState } from 'react'
+import Appbar from "./components/Appbar.jsx";
+import "./App.css";
+import Signup from "./components/Signup.jsx";
+import Signin from "./components/Signin.jsx";
+import UserDashboard from "./components/UserDashboard.jsx";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import SigninnedAppbar from "./components/SigninnedAppbar.jsx";
+import PurchaseCourse from "./components/PurchaseCourse.jsx";
+import EducatorsSignin from "./components/EducatorsSignin.jsx";
+import EduDashboard from "./components/EduDashboard.jsx";
+
+function App() {
+  const [isSignedIn, setIsSignedIn] = useState(null);
+  useEffect(() => {
+    const gettoken = async () => {
+      const token = localStorage.getItem("token");
+      const edu_token = localStorage.getItem("edu-token");
+      const tokenToVerify = token || edu_token;
+      if (!tokenToVerify) {
+        setIsSignedIn(false);
+        return;
+      }
+
+      const res = await fetch("http://localhost:3000/api/token", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${tokenToVerify}`,
+          "content-type": "application/json",
+        },
+      });
+      console.log(res.status);
+      if (res.status === 200) {
+        setIsSignedIn(true);
+        return;
+      } else if (res.status === 403) {
+        alert("Session expired. Please login again.");
+        localStorage.removeItem("token");
+        localStorage.removeItem("edu-token");
+      } else {
+        alert("Error: Please login again.");
+        localStorage.removeItem("token");
+        localStorage.removeItem("edu-token");
+        setIsSignedIn(false);
+      }
+    };
+
+    gettoken();
+  }, []);
+  if (isSignedIn === null) {
+    return <div>Loading...</div>;
+  }
+
+   return (
+    <Router>
+      {isSignedIn ? (
+        <SigninnedAppbar setIsSignedIn={setIsSignedIn} />
+      ) : (
+        <Appbar />
+      )}
+
+      <Routes>
+        {/* PUBLIC ROUTES */}
+        {!isSignedIn && (
+          <Route path="/*" element={<PublicRoutes setIsSignedIn={setIsSignedIn} />} />
+        )}
+
+        {/* PRIVATE ROUTES */}
+        {isSignedIn && (
+          <Route path="/*" element={<PrivateRoutes />} />
+        )}
+      </Routes>
+    </Router>
+  );
+}
+
+function PublicRoutes({ setIsSignedIn }) {
+  return (
+    <Routes>
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/signin" element={<Signin setIsSignedIn={setIsSignedIn} />} />
+      <Route path="/educators" element={<EducatorsSignin setIsSignedIn={setIsSignedIn} />} />
+
+      <Route path="*" element={<Navigate to="/signin" />} />
+    </Routes>
+  );
+}
+
+function PrivateRoutes() {
+  return (
+    <Routes>
+      <Route path="/dashboard" element={<UserDashboard />} />
+      <Route path="/purchasecourse/:courseId" element={<PurchaseCourse />} />
+      <Route path="/edudashboard" element={<EduDashboard />} />
+
+      <Route path="/signup" element={<UserDashboard />} />
+      <Route path="/signin" element={<UserDashboard />} />
+
+    </Routes>
+  );
+}
+export default App;
