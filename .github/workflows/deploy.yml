@@ -58,7 +58,7 @@ jobs:
               username: ubuntu
               key: ${{ secrets.EC2_SSH_KEY }}
               source: "backend"
-              target: "/home/ubuntu/project/backend"
+              target: "/home/ubuntu/project"
 
           - name: SSH to EC2 & Deploy Backend
             uses: appleboy/ssh-action@v1.0.3
