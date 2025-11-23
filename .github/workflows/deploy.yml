@@ -23,7 +23,7 @@ jobs:
           - name: Build Frontend
             run: npm run build
             env:
-              VITE_API_URL: ${{VITE_API_URL}}
+              VITE_API_URL: ${{secrets.VITE_API_URL}}
             
           - name: Upload Dist to S3
             uses: jakejarvis/s3-sync-action@master
