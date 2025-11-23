@@ -1,13 +1,19 @@
+import dotenv from "dotenv"
+dotenv.config();
 import express from "express"
-const app = express();
 import cors from 'cors';
 import mongoose from "mongoose";
 import router from "./routes/routes.js"
-import dotenv from "dotenv"
 
-app.use(cors());
+const app = express();
+
+app.use(cors({origin: ["http://localhost:5173", "https://npm-app.duckdns.org"],
+
+methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 app.use(express.json())
-dotenv.config();
 
 app.use("/api", router)
 
