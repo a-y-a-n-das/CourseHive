@@ -11,8 +11,8 @@ dotenv.config();
 
 app.use("/api", router)
 
-const port = import.meta.env.PORT
-const mongoDb_url = import.meta.env.MONGODB_URL;
+const port = process.env.PORT
+const mongoDb_url = process.env.MONGODB_URL;
 
 mongoose
   .connect(mongoDb_url)
