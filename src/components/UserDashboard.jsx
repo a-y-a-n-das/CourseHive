@@ -1,4 +1,3 @@
-import { FormatItalic } from "@mui/icons-material";
 import { Card, CardMedia, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -38,7 +37,7 @@ function UserDashboard() {
     };
 
     fetchCourses();
-  }, [navigate]);
+  }, [navigate, API]);
 
   return (
     <>

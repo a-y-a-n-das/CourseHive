@@ -1,5 +1,4 @@
 import { Button, Typography } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
 import { useNavigate } from "react-router";
 
 const SigninnedAppbar = ({setIsSignedIn}) => {

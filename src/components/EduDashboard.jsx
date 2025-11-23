@@ -44,7 +44,7 @@ function EduDashboard() {
     };
 
     fetchCourses();
-  }, [navigate]);
+  }, [navigate, API]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

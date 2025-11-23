@@ -21,7 +21,7 @@ function PurchaseCourse() {
       else return;
     };
     courseDetail();
-  }, [courseId]);
+  }, [courseId, API]);
 
   async function buyCourse() {
     await fetch(`${API}/api/purchasecourse`, {

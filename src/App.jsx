@@ -48,7 +48,7 @@ function App() {
     };
 
     gettoken();
-  }, []);
+  }, [API]);
   if (isSignedIn === null) {
     return <div>Loading...</div>;
   }
