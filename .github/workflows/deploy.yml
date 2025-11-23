@@ -69,6 +69,7 @@ jobs:
               username: ubuntu
               key: ${{ secrets.EC2_SSH_KEY }}
               script: |
+                cp /home/ubuntu/env_sec/.env /home/ubuntu/project/backend/
                 cd /home/ubuntu/project/backend
                 npm install --production
                 pm2 restart backend || pm2 start server.js --name backend
