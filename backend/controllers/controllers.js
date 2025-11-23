@@ -2,8 +2,6 @@ import { User, Course, Educator } from "../models/model.js";
 import multer from "multer";
 import jwt from "jsonwebtoken";
 
-const secret  = process.env.SECRET;
-const img_key = process.env.IMGBB_KEY;
 const storage = multer.memoryStorage();
 export const upload = multer({ storage });
 
@@ -17,7 +15,7 @@ export const imageUrl = async (req, res, next) => {
   const params = new URLSearchParams();
   params.append("image", base64Image);
   const image_res = await fetch(
-    `https://api.imgbb.com/1/upload?key=${img_key}&expiration=15552000`,
+    `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_KEY}&expiration=15552000`,
     {
       method: "POST",
       body: params,
@@ -57,7 +55,7 @@ export const signin = async (req, res) => {
   }
   const { password, ...resObj } = userObj.toObject();
 
-  const token = jwt.sign({ email: userObj.email }, secret, {
+  const token = jwt.sign({ email: userObj.email }, process.env.SECRET, {
     expiresIn: "12h",
   });
 
