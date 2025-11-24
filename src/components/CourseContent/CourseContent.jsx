@@ -51,7 +51,7 @@ function CourseContent() {
       setActiveLesson(courseData.lessons[0]);
     }
 
-    else if(!courseData || courseData.lessons?.length==0 ){
+    else if(courseData && (!courseData.lessons || courseData.lessons.length === 0) ){
       setError("No lessons available for this course.");
     }
   }, [courseData, activeLesson]);
