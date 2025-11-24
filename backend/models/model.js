@@ -1,3 +1,4 @@
+import { duration } from "@mui/material";
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
@@ -52,7 +53,16 @@ const courseSchema = mongoose.Schema({
   }
 });
 
+const LessonsSchema = mongoose.Schema({
+  title: { type: String, required: true },
+  type: { type: String, required: true },
+  courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
+  url: { type: String, required: true },
+  duration: { type: String, required: true },
+});
+
 export const User = mongoose.model("User", userSchema);
 export const Course = mongoose.model("Course", courseSchema);
 export const Educator = mongoose.model("Educator", educatorSchema);
+export const Lessons = mongoose.model("coursecontent", LessonsSchema);
 

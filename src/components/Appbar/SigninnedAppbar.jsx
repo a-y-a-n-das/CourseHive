@@ -13,6 +13,8 @@ const SigninnedAppbar = ({setIsSignedIn}) => {
           alignItems: "center",
           padding: "6px",
           height: "7vh",
+          zIndex: 1300,
+          backgroundColor: "#eeeeee",
         }}
       >
         <div>

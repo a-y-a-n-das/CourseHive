@@ -1,15 +1,16 @@
 // import { useState } from 'react'
-import Appbar from "./components/Appbar.jsx";
+import Appbar from "./components/Appbar/Appbar.jsx";
 import "./App.css";
-import Signup from "./components/Signup.jsx";
-import Signin from "./components/Signin.jsx";
-import UserDashboard from "./components/UserDashboard.jsx";
+import Signup from "./components/Student/Signup.jsx";
+import Signin from "./components/Student/Signin.jsx";
+import UserDashboard from "./components/Student/UserDashboard.jsx";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import SigninnedAppbar from "./components/SigninnedAppbar.jsx";
-import PurchaseCourse from "./components/PurchaseCourse.jsx";
-import EducatorsSignin from "./components/EducatorsSignin.jsx";
-import EduDashboard from "./components/EduDashboard.jsx";
+import SigninnedAppbar from "./components/Appbar/SigninnedAppbar.jsx";
+import PurchaseCourse from "./components/Student/PurchaseCourse.jsx";
+import EducatorsSignin from "./components/Educator/EducatorsSignin.jsx";
+import EduDashboard from "./components/Educator/EduDashboard.jsx";
+import CourseContent from "./components/CourseContent/CourseContent.jsx";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(null);
@@ -37,6 +38,7 @@ function App() {
         return;
       } else if (res.status === 403) {
         alert("Session expired. Please login again.");
+        setIsSignedIn(false);
         localStorage.removeItem("token");
         localStorage.removeItem("edu-token");
       } else {
@@ -94,6 +96,7 @@ function PrivateRoutes() {
       <Route path="/dashboard" element={<UserDashboard />} />
       <Route path="/purchasecourse/:courseId" element={<PurchaseCourse />} />
       <Route path="/edudashboard" element={<EduDashboard />} />
+      <Route path="/course/:courseId" element={<CourseContent/>} />
 
       <Route path="/signup" element={<UserDashboard />} />
       <Route path="/signin" element={<UserDashboard />} />

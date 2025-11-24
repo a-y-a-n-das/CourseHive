@@ -70,7 +70,7 @@ function UserDashboard() {
                 <li key={c._id}>
                   <Card
                     onClick={() => {
-                      navigate(`/purchasecourse/${c._id}`);
+                      navigate(`/course/${c._id}`);
                     }}
                     style={{
                       padding: "0px",
@@ -80,6 +80,7 @@ function UserDashboard() {
                       width: "300px",
                       height: "250px",
                       marginLeft: "10px",
+                      cursor: "pointer",
                     }}
                   >
                     <CardMedia

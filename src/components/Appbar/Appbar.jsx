@@ -12,6 +12,7 @@ return(
             alignItems: 'center',
             padding: "6px",
             height: "7vh", 
+            zIndex: 1300,
         }}>
             <div><Typography color="blue" variant="h5">CourseHive</Typography></div>
             <div>
