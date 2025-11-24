@@ -55,7 +55,8 @@ function CourseContent() {
       setError("No lessons available for this course.");
     }
   }, [courseData, activeLesson]);
-
+  
+  console.log(courseData.lessons);
   if(error){
     return <div style={{padding: '20px', color: 'red'}}>{error}</div>;
   }
