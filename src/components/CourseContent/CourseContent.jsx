@@ -9,11 +9,12 @@ function CourseContent() {
   const [courseData, setCourseData] = useState(null);
   const [activeLesson, setActiveLesson] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const API = import.meta.env.VITE_API_URL;
 
   // Fetch course data once when courseId changes
   useEffect(() => {
-    const token = localStorage.getItem("token") || localStorage.getItem("edu-token");
+    const token = localStorage.getItem("token");
     const fetchCourseData = async () => {
       try {
         if (!courseId) {
@@ -30,35 +31,32 @@ function CourseContent() {
         const data = await res.json();
         if (res.ok) {
           setCourseData(data);
-        } 
-        else if(res.status === 403) {
+          setActiveLesson(courseData.lessons[0]);
+
+          setLoading(false);
+          setError(null);
+        } else if (res.status === 403) {
           console.error("Access denied. Course not purchased.");
           setError("Access denied. Course not purchased.");
-        }
-        else {
-          console.error("Failed to fetch course data:", data.message);
+        } else if (res.status === 404) {
+          console.error("No course data:", data.message);
+          setError("Course has no lessons available.");
         }
       } catch (error) {
         console.error("Error fetching course data:", error);
+        setError("Error fetching course data.");
       }
     };
     fetchCourseData();
-  }, [courseId, API]);
+  }, [courseId, API, courseData]);
 
-  useEffect(() => {
-    if (courseData && !activeLesson && courseData.lessons?.length) {
-      console.log(courseData.lessons);
-      setActiveLesson(courseData.lessons[0]);
-    }
 
-    else if(courseData && (!courseData.lessons || courseData.lessons.length === 0) ){
-      setError("No lessons available for this course.");
-    }
-  }, [courseData, activeLesson]);
-  
-  
-  if(error){
-    return <div style={{padding: '20px', color: 'red'}}>{error}</div>;
+  if (loading) {
+    return <div style={{ padding: "20px" }}>Loading course content...</div>;
+  }
+
+  if (error) {
+    return <div style={{ padding: "20px", color: "red" }}>{error}</div>;
   }
 
   return (
@@ -71,10 +69,18 @@ function CourseContent() {
         />
       )}
       {activeLesson?.type === "video" && (
-        <VideoPlayer title={activeLesson?.title}  file={activeLesson.file} courseId={courseId} />
+        <VideoPlayer
+          title={activeLesson?.title}
+          file={activeLesson.file}
+          courseId={courseId}
+        />
       )}
       {activeLesson?.type === "pdf" && (
-        <PdfViewer title={activeLesson?.title} file={activeLesson.file} courseId={courseId} />
+        <PdfViewer
+          title={activeLesson?.title}
+          file={activeLesson.file}
+          courseId={courseId}
+        />
       )}
     </>
   );
