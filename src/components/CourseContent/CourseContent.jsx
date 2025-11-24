@@ -48,6 +48,7 @@ function CourseContent() {
   // Set initial active lesson only once after data arrives
   useEffect(() => {
     if (courseData && !activeLesson && courseData.lessons?.length) {
+      console.log(courseData.lessons);
       setActiveLesson(courseData.lessons[0]);
     }
     else if(courseData && !courseData.lessons?.length){
