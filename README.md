@@ -2,6 +2,10 @@
 
 A modern full-stack course-selling platform built with React, Node.js, Express, and MongoDB. CourseHive enables educators to create and manage courses while providing students with seamless course access, video/PDF lessons, and secure content delivery via AWS S3.
 
+## 🌐 Live Link
+
+🚧 **Coming Soon** - Deployed on AWS, public access launching shortly
+
 ## ✨ Features
 
 ### For Students
