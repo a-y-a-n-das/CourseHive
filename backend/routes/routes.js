@@ -1,21 +1,26 @@
 import express from "express";
 const router = express.Router();
 import {
+  educatorSignin,
+  createCourse,
+  coursesbyeducator,
+  upload,
+  educatorSignup,
+} from "../controllers/educator.js";
+
+import {
   signup,
   signin,
   courses,
   allCourses,
   courseById,
   purchaseCourse,
-  educatorSignin,
-  createCourse,
-  coursesbyeducator,
-  upload,
-  imageUrl,
   ret,
   courseContent,
-  getVideoUrl,
-} from "../controllers/controllers.js";
+} from "../controllers/student.js";
+
+import { getVideoUrl } from "../controllers/signedUrl.js";
+import { imageUrl } from "../controllers/imgUrl.js";
 import { auth } from "../controllers/auth.js";
 
 router.post("/signup", signup);
@@ -25,7 +30,14 @@ router.post("/allCourses", allCourses);
 router.post("/coursebyid", courseById);
 router.post("/purchasecourse", auth, purchaseCourse);
 router.post("/educatorsignin", educatorSignin);
-router.post("/createcourse", auth, upload.single("image"), imageUrl,createCourse);
+router.post("/educatorsignup", educatorSignup);
+router.post(
+  "/createcourse",
+  auth,
+  upload.single("image"),
+  imageUrl,
+  createCourse
+);
 router.get("/coursesbyeducator", auth, coursesbyeducator);
 router.get("/token", auth, ret);
 router.get("/coursecontent/:courseId", auth, courseContent);

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const userSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+  purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, duplicate: false,  ref: "Course" }],
 });
 
 const educatorSchema = mongoose.Schema({
