@@ -12,6 +12,7 @@ import { useNavigate } from "react-router";
 
 function EduDashboard() {
   const [courses, setCourses] = useState([]);
+  const [message, setMessage] = useState("");
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -29,18 +30,23 @@ function EduDashboard() {
     const fetchCourses = async () => {
       const res = await fetch(`${API}/api/coursesbyeducator/`, {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
 
       if (res.status === 401 || !token) {
-        navigate("/signin");
+        navigate("/educatorssignin");
         return;
       }
 
       const data = await res.json();
 
       setCourses(data.courses || []);
+      
+      if(data.courses.length === 0){
+        setMessage("You have not created any courses yet.");
+      }
     };
 
     fetchCourses();
@@ -89,6 +95,11 @@ function EduDashboard() {
         <Typography margin={"5px 10px"} variant="h6">
           My Courses
         </Typography>
+        {message && (
+          <Typography margin={"5px 10px"} variant="body1" color="error">
+            {message}
+          </Typography>
+        )}
 
         <ul
           style={{

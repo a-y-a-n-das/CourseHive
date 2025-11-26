@@ -55,30 +55,55 @@ A modern full-stack course-selling platform built with React, Node.js, Express, 
 Course-selling/
 ├── backend/
 │   ├── controllers/
-│   │   ├── auth.js          # Authentication middleware
-│   │   └── controllers.js    # API route handlers
+│   │   ├── auth.js           # JWT authentication middleware
+│   │   ├── student.js        # Student auth & course operations
+│   │   ├── educator.js       # Educator auth & course creation
+│   │   ├── signedUrl.js      # S3 pre-signed URL generation
+│   │   └── imgUrl.js         # ImgBB image upload handler
 │   ├── models/
 │   │   └── model.js          # Mongoose schemas (User, Educator, Course, Lessons)
 │   ├── routes/
 │   │   └── routes.js         # Express route definitions
 │   ├── util/
-│   │   └── s3.js             # AWS S3 pre-signed URL generator
+│   │   └── s3.js             # AWS S3 client configuration
 │   ├── .env                  # Environment variables (not in Git)
+│   ├── .gitignore
+│   ├── example.env           # Environment template
 │   ├── server.js             # Express app entry point
-│   └── package.json
+│   ├── package.json
+│   └── LICENSE
 ├── src/
 │   ├── components/
-│   │   ├── Appbar/           # Navigation components
-│   │   ├── CourseContent/    # Course viewer (video/PDF player, sidebar)
-│   │   ├── Educator/         # Educator sign-in and dashboard
-│   │   └── Student/          # Student sign-in, signup, dashboard, purchase
-│   ├── App.jsx               # Main app with routing logic
-│   ├── main.jsx              # React entry point
+│   │   ├── Appbar/
+│   │   │   ├── Appbar.jsx            # Public navigation bar
+│   │   │   └── SigninnedAppbar.jsx   # Authenticated user nav bar
+│   │   ├── CourseContent/
+│   │   │   ├── CourseContent.jsx     # Main course viewer container
+│   │   │   ├── SideBar.jsx           # Lesson list sidebar
+│   │   │   ├── VideoPlayer.jsx       # Video lesson player
+│   │   │   └── PdfViewer.jsx         # PDF lesson viewer
+│   │   ├── Educator/
+│   │   │   ├── EducatorsSignin.jsx   # Educator login
+│   │   │   ├── EducatorSignup.jsx    # Educator registration
+│   │   │   └── EduDashboard.jsx      # Educator course management
+│   │   └── Student/
+│   │       ├── Signin.jsx            # Student login
+│   │       ├── Signup.jsx            # Student registration
+│   │       ├── UserDashboard.jsx     # Student course dashboard
+│   │       └── PurchaseCourse.jsx    # Course purchase page
+│   ├── services/              # API service layer (if implemented)
+│   ├── assets/                # Static assets (images, icons)
+│   ├── App.jsx                # Main app with routing logic
+│   ├── main.jsx               # React entry point
+│   ├── App.css
 │   └── index.css
 ├── public/
-├── .env                      # Frontend environment variables (VITE_API_URL)
+├── .env                       # Frontend environment variables (VITE_API_URL)
+├── .gitignore
 ├── vite.config.js
+├── eslint.config.js
 ├── package.json
+├── LICENSE
 └── README.md
 ```
 

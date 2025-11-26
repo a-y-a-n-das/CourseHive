@@ -4,13 +4,14 @@ import "./App.css";
 import Signup from "./components/Student/Signup.jsx";
 import Signin from "./components/Student/Signin.jsx";
 import UserDashboard from "./components/Student/UserDashboard.jsx";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SigninnedAppbar from "./components/Appbar/SigninnedAppbar.jsx";
 import PurchaseCourse from "./components/Student/PurchaseCourse.jsx";
 import EducatorsSignin from "./components/Educator/EducatorsSignin.jsx";
 import EduDashboard from "./components/Educator/EduDashboard.jsx";
 import CourseContent from "./components/CourseContent/CourseContent.jsx";
+import EducatorSignup from "./components/Educator/EducatorSignup.jsx";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(null);
@@ -83,9 +84,9 @@ function PublicRoutes({ setIsSignedIn }) {
     <Routes>
       <Route path="/signup" element={<Signup />} />
       <Route path="/signin" element={<Signin setIsSignedIn={setIsSignedIn} />} />
-      <Route path="/educators" element={<EducatorsSignin setIsSignedIn={setIsSignedIn} />} />
+      <Route path="/educatorssignin" element={<EducatorsSignin setIsSignedIn={setIsSignedIn} />} />
+      <Route path="/educatorsignup" element={<EducatorSignup setIsSignedIn={setIsSignedIn} />} />
 
-      <Route path="*" element={<Navigate to="/signin" />} />
     </Routes>
   );
 }

@@ -4,6 +4,8 @@ import { useNavigate} from 'react-router-dom';
 
 function Appbar(){
     const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+
 return(
     <>
         <div style={{
@@ -16,8 +18,8 @@ return(
         }}>
             <div><Typography color="blue" variant="h5">CourseHive</Typography></div>
             <div>
-                <Button variant="contained"  onClick={()=>{navigate("/Signin")}}>Sign In</Button>
-                <Button style={{marginLeft: "10px"}} variant="contained" onClick={()=>{navigate("/Signup")}}>Sign Up</Button>
+                <Button variant="contained"  onClick={()=>{(token)? navigate("/Signin"): navigate("/educatorssignin")}}>Sign In</Button>
+                <Button style={{marginLeft: "10px"}} variant="contained" onClick={()=>{(token)? navigate("/Signup"): navigate("/educatorsignup")}}>Sign Up</Button>
             </div>
         </div>
     </>
