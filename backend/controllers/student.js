@@ -82,6 +82,7 @@ export const purchaseCourse = async (req, res) => {
 export const courseContent = async (req, res) => {
   const courseId = req.params.courseId;
   const userEmail = req.user;
+  
   if (!userEmail) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -89,6 +90,7 @@ export const courseContent = async (req, res) => {
   const user = await User.findOne({ email: userEmail }).populate(
     "purchasedCourses"
   );
+
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }

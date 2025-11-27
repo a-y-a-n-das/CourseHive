@@ -1,8 +1,13 @@
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router";
 
-const SigninnedAppbar = ({setIsSignedIn}) => {
-  const user = localStorage.getItem("user").split("@")[0];
+const SigninnedAppbar = ({ setIsSignedIn }) => {
+  let user;
+  if (localStorage.getItem("token")) {
+    user = localStorage.getItem("user");
+  } else {
+    user = localStorage.getItem("educator");
+  }
   const navigate = useNavigate();
   return (
     <>

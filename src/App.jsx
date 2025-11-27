@@ -12,6 +12,7 @@ import EducatorsSignin from "./components/Educator/EducatorsSignin.jsx";
 import EduDashboard from "./components/Educator/EduDashboard.jsx";
 import CourseContent from "./components/CourseContent/CourseContent.jsx";
 import EducatorSignup from "./components/Educator/EducatorSignup.jsx";
+import AddCourseContent from "./components/EditContent/AddCourseContent.jsx";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(null);
@@ -98,7 +99,7 @@ function PrivateRoutes() {
       <Route path="/purchasecourse/:courseId" element={<PurchaseCourse />} />
       <Route path="/edudashboard" element={<EduDashboard />} />
       <Route path="/course/:courseId" element={<CourseContent/>} />
-
+      <Route path="/addcoursecontent/:courseId" element={<AddCourseContent />} />
       <Route path="/signup" element={<UserDashboard />} />
       <Route path="/signin" element={<UserDashboard />} />
 

@@ -53,11 +53,16 @@ const courseSchema = mongoose.Schema({
 });
 
 const LessonsSchema = mongoose.Schema({
-  title: { type: String, required: true },
-  type: { type: String, required: true },
   courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
-  url: { type: String, required: true },
   duration: { type: String, required: true },
+  lessons: [
+    {
+      title: { type: String, required: true },  
+      type: { type: String, required: true },
+      file: { type: String, required: true },
+      lessonId: { type: mongoose.Schema.Types.ObjectId, default: new mongoose.Types.ObjectId(), required: true },
+    },
+  ],
 });
 
 export const User = mongoose.model("User", userSchema);

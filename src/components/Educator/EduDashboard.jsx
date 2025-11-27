@@ -115,7 +115,7 @@ function EduDashboard() {
         >
           {courses.map((c) => (
             <li key={c._id} style={{ listStyle: "none" }}>
-              <Card
+              <Card onClick={() => navigate(`/addcoursecontent/${c._id}`)}
                 style={{
                   padding: "0px",
                   display: "flex",
@@ -123,6 +123,7 @@ function EduDashboard() {
                   width: "300px",
                   height: "250px",
                   marginBottom: "20px",
+                  cursor: "pointer",
                 }}
               >
                 <CardMedia

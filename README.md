@@ -20,7 +20,10 @@ A modern full-stack course-selling platform built with React, Node.js, Express, 
 - ➕ **Course Creation** - Create courses with metadata (name, price, level, duration, category)
 - 🖼️ **Thumbnail Upload** - Upload course images via ImgBB integration
 - 📊 **Course Management** - View and manage all created courses
-- 📦 **Lesson Organization** - Structure courses with video and PDF lessons
+- 📦 **Lesson Management** - Add, view, and delete video/PDF lessons
+- 📤 **Direct S3 Upload** - Upload lessons directly to AWS S3 with presigned URLs
+- ♻️ **Real-time Updates** - Lesson list updates instantly after add/delete operations
+- 🗑️ **Smart Deletion** - Automatic cleanup of S3 files when lessons are deleted
 
 ### Technical Highlights
 - ⚡ **Fast Development** - Vite + React with HMR
@@ -61,8 +64,11 @@ Course-selling/
 │   ├── controllers/
 │   │   ├── auth.js           # JWT authentication middleware
 │   │   ├── student.js        # Student auth & course operations
-│   │   ├── educator.js       # Educator auth & course creation
-│   │   ├── signedUrl.js      # S3 pre-signed URL generation
+│   │   ├── educator.js       # Educator auth, course & lesson management
+│   │   ├── addLesson.js      # Upload URL generation & lesson addition
+│   │   ├── uploadUrl.js      # S3 presigned URL for uploads
+│   │   ├── deleteFile.js     # S3 file deletion handler
+│   │   ├── signedUrl.js      # S3 pre-signed URL generation for viewing
 │   │   └── imgUrl.js         # ImgBB image upload handler
 │   ├── models/
 │   │   └── model.js          # Mongoose schemas (User, Educator, Course, Lessons)
@@ -86,6 +92,9 @@ Course-selling/
 │   │   │   ├── SideBar.jsx           # Lesson list sidebar
 │   │   │   ├── VideoPlayer.jsx       # Video lesson player
 │   │   │   └── PdfViewer.jsx         # PDF lesson viewer
+│   │   ├── EditContent/
+│   │   │   ├── AddCourseContent.jsx  # Add lessons to courses
+│   │   │   └── EduSidebar.jsx        # Educator lesson sidebar with delete
 │   │   ├── Educator/
 │   │   │   ├── EducatorsSignin.jsx   # Educator login
 │   │   │   ├── EducatorSignup.jsx    # Educator registration
@@ -208,6 +217,10 @@ npm run preview
 - `GET /api/coursesbyeducator` - Get educator's courses
 - `GET /api/coursecontent/:courseId` - Get course lessons (purchased users only)
 - `GET /api/video/:courseId/:file` - Get pre-signed S3 URL for video/PDF
+- `POST /api/uploadurl` - Get presigned URL for uploading lessons
+- `POST /api/addlesson` - Add lesson to course
+- `DELETE /api/deleteLesson/:lessonId` - Delete lesson and S3 file
+- `DELETE /api/deletefile` - Delete file from S3 bucket
 
 ## 🔐 Authentication Flow
 
@@ -219,10 +232,28 @@ npm run preview
 
 ## 🎥 Content Delivery
 
-- Course videos and PDFs stored in AWS S3
+### Upload Flow
+1. Educator creates a course
+2. Navigates to "Add Lesson" page for that course
+3. Fills in lesson title, selects type (video/PDF), and chooses file
+4. Frontend requests presigned upload URL from backend (`/api/uploadurl`)
+5. Backend generates presigned S3 URL and returns it along with filename
+6. Frontend uploads file directly to S3 using presigned URL
+7. After successful upload, frontend calls `/api/addlesson` to save lesson metadata
+8. Lesson appears immediately in sidebar with real-time updates
+
+### Viewing Flow
+- Course videos and PDFs stored in AWS S3 under `content/{courseId}/{filename}`
 - Pre-signed URLs generated with 5-minute expiry for security
 - Only purchased course content accessible to users
-- Lessons organized by `courseId` in S3: `content/{courseId}/{filename}`
+- Students request signed URLs via `/api/video/:courseId/:file`
+
+### Deletion Flow
+1. Educator clicks delete on a lesson
+2. Frontend calls `/api/deleteLesson/:lessonId` with courseId and filename
+3. Backend deletes file from S3 using AWS SDK
+4. Backend removes lesson from MongoDB using `$pull` operator
+5. Frontend updates lesson list in real-time without page refresh
 
 ## 🧪 Development Tools
 
@@ -247,7 +278,10 @@ npm run preview
 2. Create courses from the educator dashboard
 3. Upload thumbnail, set price, level, duration, and category
 4. View all your created courses
-5. Manage course content via the platform
+5. Click on a course to add lessons
+6. Upload video (MP4/MKV) or PDF lessons with titles
+7. View lessons in real-time sidebar
+8. Delete lessons when needed (auto-removes from S3 and database)
 
 ## 🤝 Contributing
 
