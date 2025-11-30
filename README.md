@@ -92,7 +92,8 @@ Course-selling/
 │   │   ├── uploadUrl.js      # S3 presigned URL for uploads
 │   │   ├── deleteFile.js     # S3 file deletion handler
 │   │   ├── signedUrl.js      # S3 pre-signed URL generation for viewing
-│   │   └── imgUrl.js         # ImgBB image upload handler
+│   │   ├── imgUrl.js         # ImgBB image upload handler
+│   │   └── payment.js        # Razorpay payment order creation & verification
 │   ├── models/
 │   │   └── model.js          # Mongoose schemas (User, Educator, Course, Lessons)
 │   ├── routes/
@@ -117,7 +118,7 @@ Course-selling/
 │   │   │   └── PdfViewer.jsx         # PDF lesson viewer
 │   │   ├── EditContent/
 │   │   │   ├── AddCourseContent.jsx  # Add lessons to courses
-│   │   │   └── EduSidebar.jsx        # Educator lesson sidebar with delete
+│   │   │   └── EduSideBar.jsx        # Educator lesson sidebar with delete
 │   │   ├── Educator/
 │   │   │   ├── EducatorsSignin.jsx   # Educator login
 │   │   │   ├── EducatorSignup.jsx    # Educator registration
@@ -126,8 +127,8 @@ Course-selling/
 │   │       ├── Signin.jsx            # Student login
 │   │       ├── Signup.jsx            # Student registration
 │   │       ├── UserDashboard.jsx     # Student course dashboard
-│   │       └── PurchaseCourse.jsx    # Course purchase page
-│   ├── services/              # API service layer (if implemented)
+│   │       └── PurchaseCourse.jsx    # Course purchase page with Razorpay
+│   ├── services/              # API service layer (empty)
 │   ├── assets/                # Static assets (images, icons)
 │   ├── App.jsx                # Main app with routing logic
 │   ├── main.jsx               # React entry point
