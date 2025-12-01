@@ -1,0 +1,46 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Login to GHCR (no PAT needed)
+      - name: Login to GitHub Container Registry
+        run: echo "${{ github.token }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # Build backend image
+      - name: Build Backend Docker Image
+        run: |
+          docker build -t ghcr.io/a-y-a-n-das/course-backend:latest ./backend
+
+      # Push backend image
+      - name: Push Backend Docker Image
+        run: |
+          docker push ghcr.io/a-y-a-n-das/course-backend:latest
+
+      # Deploy to EC2
+      - name: SSH into EC2 and Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/course-app
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
