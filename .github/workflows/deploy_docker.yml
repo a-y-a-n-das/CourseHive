@@ -1,0 +1,91 @@
+name: Deploy Backend to EC2
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Login to GHCR (no PAT needed)
+      - name: Login to GitHub Container Registry
+        run: echo "${{ github.token }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # Build backend image
+      - name: Build Backend Docker Image
+        run: |
+          docker build -t ghcr.io/a-y-a-n-das/course-backend:latest ./backend
+
+      # Push backend image
+      - name: Push Backend Docker Image
+        run: |
+          docker push ghcr.io/a-y-a-n-das/course-backend:latest
+
+      # Deploy to EC2
+      - name: SSH into EC2 and Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/course-app
+            docker compose pull
+            docker compose up -d
+            docker image prune -f
+
+  deploy-frontend:
+        runs-on: ubuntu-latest
+  
+        steps:
+          - name: Checkout repo
+            uses: actions/checkout@v3
+
+          - name: Setup Node
+            uses: actions/setup-node@v3
+            with:
+              node-version: 24
+
+          - name: Install Frontend Dependencies
+            run: npm install
+
+          - name: Build Frontend
+            run: npm run build
+            env:
+              VITE_API_URL: ${{secrets.VITE_API_URL}}
+              VITE_RAZORPAY_KEY_ID: ${{secrets.VITE_RAZORPAY_KEY_ID}}
+              
+            
+          - name: Upload Dist to S3
+            uses: jakejarvis/s3-sync-action@master
+            with:
+              args: --delete
+            env:
+              AWS_S3_BUCKET: ayandas
+              AWS_S3_PATH: frontend
+              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              AWS_REGION: "ap-south-1"
+              SOURCE_DIR: "dist"
+              DEST_DIR: "frontend"
+
+
+          - name: Invalidate CloudFront Cache
+            uses: chetan/invalidate-cloudfront-action@v2
+            env:
+              DISTRIBUTION: E4GLPEFJB4ADK
+              PATHS: "/*"
+              AWS_REGION: "ap-south-1"
+              AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+              AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
