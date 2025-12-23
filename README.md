@@ -106,7 +106,7 @@ Course-selling/
 └── nginx.conf           # Reverse proxy config
 ```
 
-## 🚀 Getting Started
+## 🚀 Getting started with deployment
 
 ### Prerequisites
 - **Node.js** (v18 or higher)
