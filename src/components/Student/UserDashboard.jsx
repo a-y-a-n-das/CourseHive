@@ -78,7 +78,7 @@ function UserDashboard() {
                       flexDirection: "column",
                       justifyContent: "flex-start",
                       width: "300px",
-                      height: "270px",
+                      height: "280px",
                       marginLeft: "10px",
                       cursor: "pointer",
                     }}
@@ -156,7 +156,7 @@ function UserDashboard() {
                       flexDirection: "column",
                       justifyContent: "flex-start",
                       width: "300px",
-                      height: "250px",
+                      height: "270px",
                       marginLeft: "10px",
                       cursor: "pointer",
                     }}
