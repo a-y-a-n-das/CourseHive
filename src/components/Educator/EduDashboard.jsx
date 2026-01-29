@@ -121,7 +121,7 @@ function EduDashboard() {
                   display: "flex",
                   flexDirection: "column",
                   width: "300px",
-                  height: "250px",
+                  height: "270px",
                   marginBottom: "20px",
                   cursor: "pointer",
                 }}
